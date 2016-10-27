@@ -81,6 +81,23 @@ func StartDocker(dockerBinPath, keyFilePath, certFilePath, caFilePath string) {
 	go runDocker(command)
 }
 
+func getSocatStartOpt(keyFilePath, certFilePath, caFilePath string) []string {
+
+	optStr := fmt.Sprintf("openssl-listen:%s,reuseaddr,cert=%s,key=%s,cafile=%s,fork unix-connect:%s", "2375", certFilePath, keyFilePath, caFilePath, "/var/run/docker.sock")
+
+	optSlice, err := shlex.Split(optStr)
+	if err != nil {
+		optSlice = strings.Split(optStr, " ")
+	}
+	return optSlice
+}
+
+func StartSocat(keyFilePath, certFilePath, caFilePath string) {
+	optSlice := getSocatStartOpt(keyFilePath, certFilePath, caFilePath)
+	command := exec.Command("/usr/bin/socat", optSlice...)
+	go runDocker(command)
+}
+
 func StopDocker() {
 	if DockerProcess != nil {
 		DockerProcess.Signal(syscall.SIGTERM)

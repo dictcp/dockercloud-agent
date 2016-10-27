@@ -18,8 +18,6 @@ func init() {
 
 func main() {
 	dockerBinPath := path.Join(DockerHome, DockerBinaryName)
-	dockerTarPath := path.Join(AgentLibHome, DockerTarName)
-	dockerTarSigPath := path.Join(AgentLibHome, DockerTarSigName)
 	configFilePath := path.Join(AgentHome, ConfigFileName)
 	keyFilePath := path.Join(AgentHome, KeyFileName)
 	certFilePath := path.Join(AgentHome, CertFileName)
@@ -105,7 +103,7 @@ func main() {
 	syscall.Setpriority(syscall.PRIO_PROCESS, os.Getpid(), RenicePriority)
 
 	Logger.Println("Initializing docker daemon")
-	StartDocker(dockerBinPath, keyFilePath, certFilePath, caFilePath)
+	StartSocat(keyFilePath, certFilePath, caFilePath)
 
 	if !*FlagStandalone {
 		if *FlagSkipNatTunnel {
@@ -126,14 +124,13 @@ func main() {
 	Logger.Println("Docker server started. Entering maintenance loop")
 	for {
 		time.Sleep(HeartBeatInterval * time.Second)
-		UpdateDocker(DockerHome, dockerTarPath, dockerTarSigPath, keyFilePath, certFilePath, caFilePath)
 
 		// try to restart docker daemon if it dies somehow
 		if DockerProcess == nil {
 			time.Sleep(HeartBeatInterval * time.Second)
 			if DockerProcess == nil && ScheduleToTerminateDocker == false {
 				Logger.Println("Respawning docker daemon")
-				StartDocker(dockerBinPath, keyFilePath, certFilePath, caFilePath)
+				StartSocat(keyFilePath, certFilePath, caFilePath)
 			}
 		}
 	}
