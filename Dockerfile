@@ -9,4 +9,4 @@ WORKDIR /go/src/github.com/docker/dockercloud-agent
 ADD . /go/src/github.com/docker/dockercloud-agent
 RUN go get -d -v && go build -v
 
-CMD ["/go/src/github.com/docker/dockercloud-agent/dockercloud-agent"]
+CMD ["/go/src/github.com/docker/dockercloud-agent/dockercloud-agent", "-debug", "-stdout"]
