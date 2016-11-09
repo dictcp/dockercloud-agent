@@ -3,6 +3,7 @@ cat - > /nginx.conf <<EOF
 events {
 }
 
+user root;
 http {
     error_log /dev/stdout info;
     access_log /dev/stdout;
