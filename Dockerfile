@@ -13,4 +13,4 @@ ADD run.sh /
 ADD socat.sh /
 
 EXPOSE 2375
-ENTRYPOINT ["/run.sh"]
+CMD ["/run.sh"]
