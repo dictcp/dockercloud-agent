@@ -95,7 +95,7 @@ func getSocatStartOpt(keyFilePath, certFilePath, caFilePath string) []string {
 
 func StartSocat(keyFilePath, certFilePath, caFilePath string) {
 	optSlice := getSocatStartOpt(keyFilePath, certFilePath, caFilePath)
-	command := exec.Command("/socat.sh", optSlice...)
+	command := exec.Command("/tls-proxy.sh", optSlice...)
 	go runDocker(command)
 }
 
