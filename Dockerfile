@@ -10,6 +10,7 @@ ADD . /go/src/github.com/docker/dockercloud-agent
 RUN go get -d -v && go build -v
 RUN ln -s /go/src/github.com/docker/dockercloud-agent/dockercloud-agent /usr/bin/dockercloud-agent
 ADD run.sh /
+ADD socat.sh /
 
 EXPOSE 2375
 ENTRYPOINT ["/run.sh"]
