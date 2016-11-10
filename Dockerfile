@@ -1,7 +1,7 @@
 FROM golang:1.5.4
 
 # Install FPM for packaging
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qy ruby ruby-dev rpm socat nginx netcat-openbsd vim curl && \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -qy ruby ruby-dev rpm socat nginx netcat-openbsd vim curl net-tools && \
 	gem install --no-rdoc --no-ri fpm --version 1.0.2
 
 ENV GOPATH /go
