@@ -17,4 +17,4 @@ echo "Using dockercloud-agent.conf:"
 cat /etc/dockercloud/agent/dockercloud-agent.conf
 
 mkdir -p /var/log/dockercloud && touch /var/log/dockercloud/docker.log && tail -F /var/log/dockercloud/docker.log &
-exec /usr/bin/dockercloud-agent -stdout -debug "$@"
+exec /usr/bin/dockercloud-agent -stdout "$@"

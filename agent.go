@@ -81,7 +81,6 @@ func main() {
 			RegPost(regUrl, caFilePath, configFilePath)
 
 			CreateCerts(keyFilePath, certFilePath, Conf.CertCommonName)
-			DownloadDocker(DockerTarURL, DockerHome)
 
 			Logger.Printf("Registering in Docker Cloud via PATCH: %s",
 				regUrl+Conf.UUID)
@@ -96,14 +95,11 @@ func main() {
 		Logger.Fatalln(err)
 	}
 
-	DownloadDocker(DockerTarURL, DockerHome)
-	Logger.Print("Found docker: version ", GetDockerClientVersion(dockerBinPath))
-
 	HandleSig()
 	syscall.Setpriority(syscall.PRIO_PROCESS, os.Getpid(), RenicePriority)
 
-	Logger.Println("Initializing docker daemon")
-	StartSocat(keyFilePath, certFilePath, caFilePath)
+	Logger.Println("Initializing tls-proxy")
+	StartTlsProxy(keyFilePath, certFilePath, caFilePath)
 
 	if !*FlagStandalone {
 		if *FlagSkipNatTunnel {
@@ -129,8 +125,8 @@ func main() {
 		if DockerProcess == nil {
 			time.Sleep(HeartBeatInterval * time.Second)
 			if DockerProcess == nil && ScheduleToTerminateDocker == false {
-				Logger.Println("Respawning docker daemon")
-				StartSocat(keyFilePath, certFilePath, caFilePath)
+				Logger.Println("Respawning tls-proxy daemon")
+				StartTlsProxy(keyFilePath, certFilePath, caFilePath)
 			}
 		}
 	}

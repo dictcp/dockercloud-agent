@@ -81,9 +81,9 @@ func StartDocker(dockerBinPath, keyFilePath, certFilePath, caFilePath string) {
 	go runDocker(command)
 }
 
-func getSocatStartOpt(keyFilePath, certFilePath, caFilePath string) []string {
+func getTlsProxyStartOpt(keyFilePath, certFilePath, caFilePath string) []string {
 
-	// optStr := fmt.Sprintf("openssl-listen:%s,reuseaddr,cert=%s,key=%s,cafile=%s,cipher=HIGH:!DH,method=TLS1,fork unix-connect:%s", "2375", certFilePath, keyFilePath, caFilePath, "/var/run/docker.sock")
+	// FIXME hardcoded value due to format
 	optStr := fmt.Sprintf("%s %s %s %s %s", "2375", certFilePath, keyFilePath, caFilePath, "/var/run/docker.sock")
 
 	optSlice, err := shlex.Split(optStr)
@@ -93,8 +93,8 @@ func getSocatStartOpt(keyFilePath, certFilePath, caFilePath string) []string {
 	return optSlice
 }
 
-func StartSocat(keyFilePath, certFilePath, caFilePath string) {
-	optSlice := getSocatStartOpt(keyFilePath, certFilePath, caFilePath)
+func StartTlsProxy(keyFilePath, certFilePath, caFilePath string) {
+	optSlice := getTlsProxyStartOpt(keyFilePath, certFilePath, caFilePath)
 	command := exec.Command("/tls-proxy.sh", optSlice...)
 	go runDocker(command)
 }
