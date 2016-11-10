@@ -6,7 +6,7 @@ events {
 user root;
 
 http {
-    error_log /dev/stderr;
+    error_log /dev/stdout info;
     access_log /dev/stdout;
     default_type  application/json;
     server {
