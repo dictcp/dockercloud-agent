@@ -16,18 +16,18 @@ http {
         ssl_verify_client off;
 
         location / {
-            proxy_pass http://unix:$5:/;
+            proxy_pass http://unix:$5:;
         }
         location /v1.22/version {
             proxy_set_header Accept-Encoding "";
-            proxy_pass http://unix:/var/run/docker.sock:/;
+            proxy_pass http://unix:/var/run/docker.sock:;
             sub_filter_once off;
             sub_filter_types application/json;
             sub_filter '1.11.2' '1.11.2-cs5';
         }
         location /v1.22/info {
             proxy_set_header Accept-Encoding "";
-            proxy_pass http://unix:/var/run/docker.sock:/;
+            proxy_pass http://unix:/var/run/docker.sock:;
             sub_filter_once off;
             sub_filter_types application/json;
             sub_filter '1.11.2' '1.11.2-cs5';
