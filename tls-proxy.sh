@@ -12,11 +12,12 @@ http {
 
     server {
         listen $1 default_server ssl;
+        server_name _;
 
         ssl_certificate      $2;
         ssl_certificate_key  $3;
         ssl_client_certificate $4;
-        ssl_verify_client on;
+        ssl_verify_client ${TLSVERIFY:-on};
         ssl_verify_depth 10;
 
         keepalive_timeout   70;
@@ -40,7 +41,7 @@ http {
             subs_filter '1.11.2' '1.11.2-cs5';
 
             # for version resp: {"Version":"1.11.2-cs5","GitCommit":"d364ea1"}
-            subs_filter 'GitCommit":"([0-9a-e]*)"' '"GitCommit":"d364ea1"';
+            subs_filter '"GitCommit":"([0-9a-f]*)"' '"GitCommit":"d364ea1"';
         }
     }
 }
