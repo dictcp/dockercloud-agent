@@ -90,6 +90,7 @@ func runNgrok(cmd *exec.Cmd) {
 
 func monitorTunnels(url, ngrokLogPath string) {
 	update, _ := tail.TailFile(ngrokLogPath, tail.Config{
+		Poll:   true,
 		Follow: true,
 		ReOpen: true})
 	for line := range update.Lines {
